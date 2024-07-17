@@ -1,0 +1,23 @@
+server:
+  servlet:
+    contextPath: /v1/api/graph
+
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  flyway:
+    enable: false
+    baseline-on-migration: true
+
+  application:
+    name: api
+
+  datasource:
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    url: ${DATABASE_URL}
+    driver-class-name: org.postgresql.Driver
