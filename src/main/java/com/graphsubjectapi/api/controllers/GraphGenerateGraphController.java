@@ -1,7 +1,7 @@
 package com.graphsubjectapi.api.controllers;
 
 import com.graphsubjectapi.api.graph.AdjacencyList;
-import com.graphsubjectapi.api.models.CourseGradeModel;
+import com.graphsubjectapi.api.models.CourseCurriculumModel;
 import com.graphsubjectapi.api.services.GraphGenerateGraphService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +14,7 @@ public class GraphGenerateGraphController {
     @Autowired
     GraphGenerateGraphService graphGenerateGraphService;
     @PostMapping(value = "/generateGraph")
-    AdjacencyList generateGraph(@RequestBody CourseGradeModel gradeModel) {
+    AdjacencyList generateGraph(@RequestBody CourseCurriculumModel gradeModel) {
         return ResponseEntity.ok(graphGenerateGraphService.generateGraph(gradeModel)).getBody();
     }
 }

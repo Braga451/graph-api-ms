@@ -10,12 +10,12 @@ import lombok.Data;
 @Table(name="requirements")
 public class RequirementEntity {
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @JsonIgnore
     @Column(name = "req_id", nullable = false)
-    private int reqId;
+    private Integer reqId;
     @Column(name = "subject_id", nullable = false)
-    public int subjectId;
+    public Integer subjectId;
     @Column(name = "dependency_id", nullable = false)
-    public int dependencyId;
+    public Integer dependencyId;
 }
