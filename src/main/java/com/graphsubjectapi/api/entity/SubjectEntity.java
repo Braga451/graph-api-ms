@@ -1,5 +1,6 @@
 package com.graphsubjectapi.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import lombok.Data;
 public class SubjectEntity {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
+    @JsonIgnore
     private Integer id;
     @Column(name = "semester", nullable = false)
     public Integer semester;

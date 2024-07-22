@@ -1,12 +1,11 @@
 package com.graphsubjectapi.api.controllers;
 
 import com.graphsubjectapi.api.entity.SubjectEntity;
+import com.graphsubjectapi.api.models.CourseGradeModel;
 import com.graphsubjectapi.api.services.GraphSubjectsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,8 +14,13 @@ public class GraphSubjectsController {
     @Autowired
     GraphSubjectsService graphSubjectsService;
     @GetMapping(value="/getSubjects")
-    public List<SubjectEntity> getSubjects(@RequestParam(value = "lowerLimit") Integer lowerLimit,
-                                           @RequestParam(value = "upperLimit") Integer upperLimit) {
-        return graphSubjectsService.getSubjects(lowerLimit, upperLimit);
+    public List<SubjectEntity> getSubjects(@RequestParam(value = "offset") Integer offset,
+                                           @RequestParam(value = "limit") Integer limit) {
+        return ResponseEntity.ok(graphSubjectsService.getSubjects(offset, limit)).getBody();
+    }
+
+    @PostMapping(value = "/getSubjectsInCourse")
+    public List<SubjectEntity> getSubjectsInCourse(@RequestBody CourseGradeModel courseGradeModel) {
+        return ResponseEntity.ok(graphSubjectsService.getSubjectsBySubjectId(courseGradeModel.getSubjectsId())).getBody();
     }
 }
