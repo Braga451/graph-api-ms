@@ -1,35 +1,34 @@
 package com.graphsubjectapi.api.graph;
 
-import com.graphsubjectapi.api.entity.RequirementEntity;
 import com.graphsubjectapi.api.entity.SubjectEntity;
+import com.graphsubjectapi.api.models.SubjectModel;
 import lombok.Data;
 
 import java.util.*;
 
 @Data
 public class AdjacencyList {
-    private List<SubjectEntity> nodes;
+    private List<SubjectModel> nodes;
     private Map<String, List<String>> edges;
 
-    public AdjacencyList(List<SubjectEntity> nodes, List<RequirementEntity> edges) {
-        this.nodes = nodes;
+    public AdjacencyList(List<SubjectEntity> subjects) {
+        this.nodes = new ArrayList<>();
+        this.edges = new HashMap<>();
 
-        Map<Integer, String> idToSubjectId = new HashMap<>();
-        Map<String, List<String>> formattedEdges = new HashMap<>();
+        for (SubjectEntity subject : subjects) {
+            SubjectModel subjectModel = new SubjectModel(
+                    subject.getSemester(),
+                    subject.getName(),
+                    subject.getWorkload(),
+                    subject.getSubjectId()
+            );
 
-        for (SubjectEntity node : nodes) {
-            idToSubjectId.put(node.getId(), node.getSubjectId());
-            formattedEdges.put(node.getSubjectId(), new ArrayList<>());
+            nodes.add(subjectModel);
+            edges.put(subjectModel.getSubjectId(), new ArrayList<>());
+
+            List<SubjectEntity> reqs = subject.getRequirements();
+
+            reqs.forEach(req -> edges.get(subjectModel.getSubjectId()).add(req.getSubjectId()));
         }
-
-        for (RequirementEntity edge: edges) {
-            if (Objects.isNull(idToSubjectId.get(edge.dependencyId))) {
-                throw new NullPointerException("Missing dependecy at: ".concat(idToSubjectId.get(edge.getSubjectId())));
-            }
-
-            formattedEdges.get(idToSubjectId.get(edge.getSubjectId())).add(idToSubjectId.get(edge.getDependencyId()));
-        }
-
-        this.edges = formattedEdges;
     }
 }

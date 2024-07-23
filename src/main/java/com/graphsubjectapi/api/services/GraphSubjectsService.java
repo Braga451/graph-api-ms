@@ -24,7 +24,7 @@ public class GraphSubjectsService {
         return subjectRepository.save(new SubjectEntity(
                 null, subjectModel.getSemester(),
                 subjectModel.getName(), subjectModel.getWorkload(),
-                subjectModel.getSubjectId()
+                subjectModel.getSubjectId(), null
         ));
     }
 

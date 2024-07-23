@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class GraphGenerateGraphController {
     @Autowired
     GraphGenerateGraphService graphGenerateGraphService;
-    @PostMapping(value = "/generateGraph")
+   @PostMapping(value = "/generateGraph")
     AdjacencyList generateGraph(@RequestBody CourseCurriculumModel gradeModel) {
         return ResponseEntity.ok(graphGenerateGraphService.generateGraph(gradeModel)).getBody();
     }

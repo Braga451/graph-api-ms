@@ -1,10 +1,15 @@
 package com.graphsubjectapi.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -28,4 +33,18 @@ public class SubjectEntity {
     
     @Column(name = "subject_id", length = 25, nullable = false)
     public String subjectId;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.DETACH})
+    @JoinTable(
+            name = "requirements",
+            joinColumns = {
+                    @JoinColumn(name = "subject_id", referencedColumnName = "id", nullable = false)
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "dependency_id", referencedColumnName = "id", nullable = false)
+            }
+    )
+    @JsonIgnoreProperties("requirements")
+    private List<SubjectEntity> requirements;
 }
