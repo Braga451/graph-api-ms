@@ -17,18 +17,23 @@ public class GraphSubjectsController {
     GraphSubjectsService graphSubjectsService;
 
     @PostMapping(value = "/insertSubject")
-    public ResponseEntity<SubjectEntity> insertSubject(@RequestBody SubjectModel subjectModel) {
+    public ResponseEntity<SubjectModel> insertSubject(@RequestBody SubjectModel subjectModel) {
         return ResponseEntity.status(HttpStatus.CREATED).body(graphSubjectsService.insertSubject(subjectModel));
     }
 
     @GetMapping(value="/getSubjects")
-    public ResponseEntity<List<SubjectEntity>> getSubjects(@RequestParam(value = "offset") Integer offset,
+    public ResponseEntity<List<SubjectModel>> getSubjects(@RequestParam(value = "offset") Integer offset,
                                            @RequestParam(value = "limit") Integer limit) {
         return ResponseEntity.ok(graphSubjectsService.getSubjects(offset, limit));
     }
 
+    @GetMapping(value = "/getSubjectBySubjectId")
+    public ResponseEntity<SubjectModel>  getSubjectBySubjectId(@RequestParam(value = "subjectId") String subjectId) {
+        return ResponseEntity.ok(graphSubjectsService.getSubjectBySubjectId(subjectId));
+    }
+
     @PostMapping(value = "/getSubjectsInCourse")
-    public ResponseEntity<List<SubjectEntity>> getSubjectsInCourse(@RequestBody CourseCurriculumModel courseCurriculumModel) {
+    public ResponseEntity<List<SubjectModel>> getSubjectsInCourse(@RequestBody CourseCurriculumModel courseCurriculumModel) {
         return ResponseEntity.ok(graphSubjectsService.getSubjectsBySubjectId(courseCurriculumModel.getSubjectsId()));
     }
 

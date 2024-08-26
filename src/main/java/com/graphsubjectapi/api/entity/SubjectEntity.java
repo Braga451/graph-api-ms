@@ -45,6 +45,5 @@ public class SubjectEntity {
                     @JoinColumn(name = "dependency_id", referencedColumnName = "id", nullable = false)
             }
     )
-    @JsonIgnoreProperties("requirements")
     private List<SubjectEntity> requirements;
 }

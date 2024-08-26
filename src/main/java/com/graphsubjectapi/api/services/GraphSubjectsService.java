@@ -18,27 +18,36 @@ public class GraphSubjectsService {
     private SubjectRepository subjectRepository;
     final Logger logger = LoggerFactory.getLogger(GraphSubjectsService.class);
 
-    public SubjectEntity insertSubject(SubjectModel subjectModel) {
+    public SubjectModel insertSubject(SubjectModel subjectModel) {
         logger.info("insertSubject({})", subjectModel);
 
-        return subjectRepository.save(new SubjectEntity(
-                null, subjectModel.getSemester(),
-                subjectModel.getName(), subjectModel.getWorkload(),
-                subjectModel.getSubjectId(), null
-        ));
+        return new SubjectModel(
+                subjectRepository.save(new SubjectEntity(
+                    null, subjectModel.getSemester(),
+                    subjectModel.getName(), subjectModel.getWorkload(),
+                    subjectModel.getSubjectId(), null
+                )
+            )
+        );
     }
 
-    public List<SubjectEntity> getSubjects(Integer offset, Integer limit) {
+    public List<SubjectModel> getSubjects(Integer offset, Integer limit) {
         logger.info("getSubjects({}, {})", offset, limit);
         if (limit > 25)
             throw new IndexOutOfBoundsException("Max limit (25) exceed");
-        return subjectRepository.findAll(PageRequest.of(offset, limit)).toList();
+        return subjectRepository.findAll(PageRequest.of(offset, limit)).stream().map(SubjectModel::new).toList();
     }
 
-    public List<SubjectEntity> getSubjectsBySubjectId(List<String> subjectsId) {
+    public SubjectModel getSubjectBySubjectId(String subjectId) {
+        logger.info("getSubjectBySubjectId({})", subjectId);
+
+        return new SubjectModel(subjectRepository.findBySubjectId(subjectId));
+    }
+
+    public List<SubjectModel> getSubjectsBySubjectId(List<String> subjectsId) {
         logger.info("getSubjectsBySubjectId({})", subjectsId);
 
-        return subjectRepository.findAllBySubjectIdIn(subjectsId);
+        return subjectRepository.findAllBySubjectIdIn(subjectsId).stream().map(SubjectModel::new).toList();
     }
 
     @Transactional
@@ -54,7 +63,7 @@ public class GraphSubjectsService {
 
     @Transactional
     public Integer deleteSubject(String subjectId) {
-        logger.info("deleteSubject({subjectId})");
+        logger.info("deleteSubject({})", subjectId);
 
         return subjectRepository.deleteBySubjectId(subjectId);
     }

@@ -12,7 +12,9 @@ import java.util.List;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<SubjectEntity, Integer> {
+    SubjectEntity findBySubjectId(String subjectId);
     List<SubjectEntity> findAllBySubjectIdIn(List<String> subjectsId);
+    List<SubjectEntity> findAllByIdIn(List<Integer> ids);
     Integer deleteBySubjectId(String subjectId);
 
     @Modifying
